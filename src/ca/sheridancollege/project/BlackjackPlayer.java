@@ -57,24 +57,25 @@ public class BlackjackPlayer extends BlackjackDealer {
     }
     
     public void split() {
-        if ((splitHand.getSize() == 0) && (super.hand.getSize() == 2) && 
-                (super.hand.get(0).getType() == super.hand.get(1).getType())) {
-            splitHand.add(super.hand.get(1));
-            super.hand.remove(1);
+        if ((splitHand.getSize() == 0) && (super.getHand().getSize() == 2) && 
+                (super.getHand().getCardAtIndex(0).getRank() == 
+                super.getHand().getCardAtIndex(0).getRank())) {
+            splitHand.draw(super.getHand().getCardAtIndex(1));
+            super.getHand().removeCard();
         }
         // else throw custom exception
     }
     
+    // that one case one the given card is face down (like always for dealer)
+    // if ever did that, cannot do anything anymore until the end of the round
     public void doubleDown() {
-        
-    }
-    
-    public void insurance(double sideBetAmount) {
-        
-    }
-    
-    public void surrender() {
-        
+        if ((super.getHand().handValue() == 9) || 
+                (super.getHand().handValue() == 10) ||
+                (super.getHand().handValue() == 11)) {
+            this.sideBet = bet;
+            //draw ONE card after and is done for the rest of the game
+        }
+        //else EX
     }
     
     public void play() {

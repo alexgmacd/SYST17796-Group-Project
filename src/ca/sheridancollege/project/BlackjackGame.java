@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ca.sheridancollege.project;
 
 import java.util.ArrayList;
@@ -19,7 +14,7 @@ public class BlackjackGame extends Game {
     private Stack<BlackjackCard> shoe;
     
     public BlackjackGame() {
-        super();
+        super("Blackjack");
         dealer = new BlackjackDealer();
         shoe = new Stack<BlackjackCard>();
         ArrayList futureShoe = new ArrayList<BlackjackCard>();

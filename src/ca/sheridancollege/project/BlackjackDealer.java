@@ -9,26 +9,30 @@ package ca.sheridancollege.project;
  *
  * @author Alex
  */
-public class Dealer extends Player {
+public class BlackjackDealer extends Player {
     
     //Ask in meeting on implementation, private or protected.
     private BlackjackHand hand;
     
-    public Dealer(){
+    public BlackjackDealer(){
         super("Dealer");
         hand = new BlackjackHand();
+    }
+    
+    public BlackjackHand getHand() {
+        return this.hand;
+    }
+    
+    public void setHand(BlackjackHand hand) {
+        this.hand = hand;
     }
     
     public void hit(BlackjackCard card){
         hand.draw(card);
     }
     
-    public boolean stand(){
-        return hand.handValue() >= 17;
-    }
-    
     public boolean busted(){
-        return hand.handValue()>21;
+        return hand.handValue() > 21;
     }
     
     public void play(){

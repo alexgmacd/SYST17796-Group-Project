@@ -23,10 +23,15 @@ public class BlackjackHand extends GroupOfCards {
 
     public void draw(BlackjackCard card) {
         cards.add(card);
-        setSize(getSize()+1);
+        setSize(getSize() + 1);
         if (card.getRank() == Rank.ACE) {
             aceCount++;
         }
+    }
+    
+    public void removeCard() {
+        cards.remove(cards.size() - 1);
+        super.setSize(super.getSize() - 1);
     }
     
     public void clearHand() {
@@ -93,7 +98,11 @@ public class BlackjackHand extends GroupOfCards {
         return handValue;
     }
     
+    public BlackjackCard getCardAtIndex(int index) {
+        return (BlackjackCard)cards.get(index);
+    }
+    
     public String toString(){
-        return "Hand: " + cards;
+        return "Hand: " + cards; 
     }
 }
