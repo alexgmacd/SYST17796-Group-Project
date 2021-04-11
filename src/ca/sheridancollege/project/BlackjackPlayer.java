@@ -2,7 +2,7 @@ package ca.sheridancollege.project;
 
 /**
  *
- * @author Eleonora Kukash
+ * @author Eleonora
  */
 public class BlackjackPlayer extends BlackjackDealer {
     private BlackjackHand splitHand;
@@ -19,6 +19,15 @@ public class BlackjackPlayer extends BlackjackDealer {
         setMoney(500);
     }
     
+    public BlackjackHand getSplitHand() {
+        return splitHand;
+    }
+    
+    public void setSplitHand(BlackjackHand splitHand) {
+        this.splitHand.draw(super.getHand().getCardAtIndex(1));
+        super.getHand().removeCardToSplit();
+    }
+    
     public double getBet() {
         return bet;
     }
@@ -28,8 +37,10 @@ public class BlackjackPlayer extends BlackjackDealer {
             throw new IllegalArgumentException("The bet amount should be positive");
         else if (bet > this.money)
              throw new IllegalArgumentException("Not enough money to make this bet");
-        else
-            this.bet = bet;
+        else {
+             this.bet = bet;
+             this.money -= bet;
+        }
     }
     
     public double getSideBet() {
@@ -56,32 +67,36 @@ public class BlackjackPlayer extends BlackjackDealer {
             this.money = money;
     }
     
-    public void split() throws InvalidSplitException {
+    public void win(double amount) {
+        this.money += amount;
+        this.bet = 0;
+        this.sideBet = 0;
+        if (this.splitHand.isEmpty())
+            super.getHand().clearHand();
+        else if (this.splitHand.isEmpty())
+            this.splitHand.clearHand();
+    }
+    
+    public void split() {
         if ((splitHand.getSize() == 0) && (super.getHand().getSize() == 2) && 
                 (super.getHand().getCardAtIndex(0).getRank() == 
-                super.getHand().getCardAtIndex(1).getRank())) {
+                super.getHand().getCardAtIndex(0).getRank())) {
             splitHand.draw(super.getHand().getCardAtIndex(1));
-            super.getHand().removeCard();
-        } else {
-            throw new InvalidSplitException(
-                    "Split only available with two cards of the same rank.");
+            super.getHand().removeCardToSplit();
         }
+        // else throw custom exception
     }
     
     // that one case one the given card is face down (like always for dealer)
     // if ever did that, cannot do anything anymore until the end of the round
-    public void doubleDown() throws InvalidDoubleDownException {
+    public void doubleDown() {
         if ((super.getHand().handValue() == 9) || 
                 (super.getHand().handValue() == 10) ||
                 (super.getHand().handValue() == 11)) {
             this.sideBet = bet;
             //draw ONE card after and is done for the rest of the game
-        } else {
-            throw new InvalidDoubleDownException(
-                    "Double down only available with a hand with total value"
-                            + " of 9, 10 or 11.");
-
         }
+        //else EX
     }
     
     public void play() {
@@ -89,7 +104,20 @@ public class BlackjackPlayer extends BlackjackDealer {
     }
     
     public String toString() {
-      String result = "";
-      return result;
-    }
+      StringBuilder s = new StringBuilder();
+      s.append(String.format("%s's %s Hand Value: %d", 
+            getPlayerID(), getHand().toString(), getHand().handValue()));
+      
+      s.append("Curent money: ").append(money);
+      
+      if(bet > 0){
+          s.append("\nCurrent bet: ").append(bet);
+      }
+      
+      if(sideBet > 0 ){
+          s.append("\nCurrent side bet: ").append(sideBet);
+      }
+      
+      return s.toString();
+    }      
 }

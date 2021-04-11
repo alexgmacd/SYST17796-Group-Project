@@ -7,7 +7,7 @@ import java.util.Stack;
 
 /**
  *
- * @author Eleonora Kukash
+ * @author Eleonora
  */
 public class BlackjackGame extends Game {
     private BlackjackDealer dealer;
@@ -18,8 +18,8 @@ public class BlackjackGame extends Game {
         dealer = new BlackjackDealer();
         shoe = new Stack<BlackjackCard>();
         ArrayList futureShoe = new ArrayList<BlackjackCard>();
-        for (int i = 0; i < 6, i++) {
-            BlackjackDeck deck =- new Deck();
+        for (int i = 0; i < 6; i++) {
+            BlackjackDeck deck =- new BlackjackDeck();
             deck.shuffle();
             futureShoe.addAll(deck);
         }
@@ -32,8 +32,35 @@ public class BlackjackGame extends Game {
         shoe.addAll(futureShoe);
     }
     
+    public BlackjackDealer getDealer() {
+        return dealer;
+    }
+    
+    public Stack<BlackjackCard> getShoe() {
+        return shoe;
+    }
+    
+    public boolean checkPlayer(String playerID) {
+        boolean checker = true;
+        for (int i = 0; i < super.getPlayers().size(); i++) {
+            if ((getPlayerAtIndex(i).getPlayerID().equals(playerID)) || 
+                    (getPlayerAtIndex(i).getPlayerID().equals("Dealer"))) {
+                checker = false;
+                break;
+            }
+        }
+        return checker;
+    }
+    
+    public BlackjackPlayer getPlayerAtIndex(int player) {
+        return (BlackjackPlayer)super.getPlayers().get(player);
+    }
+    
+    public void addPlayer(BlackjackPlayer player) {
+        super.getPlayers().add(player);
+    }
+    
     public void play() {
-        
     }
     
     public void declareWinner() {
