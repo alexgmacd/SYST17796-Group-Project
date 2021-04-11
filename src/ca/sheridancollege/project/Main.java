@@ -51,6 +51,8 @@ public class Main {
             } while (continueLoop);
          }
          
+         // EVERYTHING BELOW WILL BE ADDED INSIDE DO-WHILE (TO REPEAT ROUND); NOT ADDED YET SOLELY FOR NOT CONFUSING MYSELF UNTIL DONE CODING ONE WHOLE ROUND
+         
          // betting
          for (int i = 0; i < game.getPlayers().size(); i++) {
             continueLoop = true;
@@ -70,6 +72,19 @@ public class Main {
             } while (continueLoop);
          }
          
-         // everyone gets one card
+         // everyone gets one card, ADD 2 LINES FOR DISPLAYING
+         for (int i = 0; i < game.getPlayers().size(); i++) {
+             game.getPlayerAtIndex(i).hit(game.getShoe().pop());
+         }
+         game.getDealer().hit(game.getShoe().pop());
+         
+         //everyone gets the second card, ADD 2 LINES FOR DISPLAYING (last card hidden for dealer only)
+         for (int i = 0; i < game.getPlayers().size(); i++) {
+             game.getPlayerAtIndex(i).hit(game.getShoe().pop());
+         }
+         game.getDealer().hit(game.getShoe().pop());
+         
+         // check naturals
+         
     }
 }
