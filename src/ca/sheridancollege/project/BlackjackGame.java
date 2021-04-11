@@ -19,9 +19,9 @@ public class BlackjackGame extends Game {
         shoe = new Stack<BlackjackCard>();
         ArrayList futureShoe = new ArrayList<BlackjackCard>();
         for (int i = 0; i < 6; i++) {
-            BlackjackDeck deck =- new BlackjackDeck();
+            BlackjackDeck deck = new BlackjackDeck();
             deck.shuffle();
-            futureShoe.addAll(deck);
+            futureShoe.addAll(deck.showCards());
         }
         Collections.shuffle(futureShoe);
         Random random = new Random();

@@ -77,26 +77,31 @@ public class BlackjackPlayer extends BlackjackDealer {
             this.splitHand.clearHand();
     }
     
-    public void split() {
+    public void split() throws InvalidSplitException {
         if ((splitHand.getSize() == 0) && (super.getHand().getSize() == 2) && 
                 (super.getHand().getCardAtIndex(0).getRank() == 
                 super.getHand().getCardAtIndex(0).getRank())) {
             splitHand.draw(super.getHand().getCardAtIndex(1));
             super.getHand().removeCardToSplit();
+        } else {
+            throw new InvalidSplitException(
+                    "Split only available with two cards of the same rank.");
         }
-        // else throw custom exception
     }
     
     // that one case one the given card is face down (like always for dealer)
     // if ever did that, cannot do anything anymore until the end of the round
-    public void doubleDown() {
+    public void doubleDown() throws InvalidDoubleDownException {
         if ((super.getHand().handValue() == 9) || 
                 (super.getHand().handValue() == 10) ||
                 (super.getHand().handValue() == 11)) {
             this.sideBet = bet;
             //draw ONE card after and is done for the rest of the game
+        } else {
+            throw new InvalidDoubleDownException(
+                    "Double down only available with a hand with total value"
+                            + " of 9, 10 or 11.");
         }
-        //else EX
     }
     
     public void play() {
@@ -108,7 +113,7 @@ public class BlackjackPlayer extends BlackjackDealer {
       s.append(String.format("%s's %s Hand Value: %d", 
             getPlayerID(), getHand().toString(), getHand().handValue()));
       
-      s.append("Curent money: ").append(money);
+      s.append("\nCurent money: ").append(money);
       
       if(bet > 0){
           s.append("\nCurrent bet: ").append(bet);

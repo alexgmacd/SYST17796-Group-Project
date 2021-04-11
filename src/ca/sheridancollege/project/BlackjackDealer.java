@@ -35,6 +35,12 @@ public class BlackjackDealer extends Player {
         return hand.handValue() > 21;
     }
     
+    public String toString(){
+        String s = String.format("%s's %s\nHand Value: %d", 
+                getPlayerID(), hand.toString(), hand.handValue());
+        return s;
+    }
+    
     public void play(){
         //Maybe just showing dealer's first card after the drawing in BlackjackGame
         //Showing values of dealers hand, if statement if it's empty, say he draws card, if it has cards displaying them and the value instead?
