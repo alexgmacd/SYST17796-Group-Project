@@ -7,7 +7,7 @@ import java.util.Stack;
 
 /**
  *
- * @author Eleonora Kukash
+ * @author Eleonora
  */
 public class BlackjackGame extends Game {
     private BlackjackDealer dealer;

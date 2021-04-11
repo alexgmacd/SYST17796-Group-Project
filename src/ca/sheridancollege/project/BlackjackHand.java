@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Alex
+ * @modifier Eleonora
  */
 public class BlackjackHand extends GroupOfCards {
 
@@ -29,9 +30,11 @@ public class BlackjackHand extends GroupOfCards {
         }
     }
     
-    public void removeCard() {
-        cards.remove(cards.size() - 1);
-        super.setSize(super.getSize() - 1);
+    public void removeCardToSplit() {
+        if (cards.size() == 2) {
+            cards.remove(1);
+            super.setSize(1);
+        }
     }
     
     public void clearHand() {
@@ -42,6 +45,10 @@ public class BlackjackHand extends GroupOfCards {
 
     public boolean checkNaturals() {
         return getSize() == 2 && handValue() == 21;
+    }
+    
+    public boolean isEmpty() {
+        return super.cards.isEmpty();
     }
 
     public int handValue() {

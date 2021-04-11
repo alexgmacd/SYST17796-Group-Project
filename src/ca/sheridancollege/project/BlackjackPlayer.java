@@ -2,7 +2,7 @@ package ca.sheridancollege.project;
 
 /**
  *
- * @author Eleonora Kukash
+ * @author Eleonora
  */
 public class BlackjackPlayer extends BlackjackDealer {
     private BlackjackHand splitHand;
@@ -19,6 +19,15 @@ public class BlackjackPlayer extends BlackjackDealer {
         setMoney(500);
     }
     
+    public BlackjackHand getSplitHand() {
+        return splitHand;
+    }
+    
+    public void setSplitHand(BlackjackHand splitHand) {
+        this.splitHand.draw(super.getHand().getCardAtIndex(1));
+        super.getHand().removeCardToSplit();
+    }
+    
     public double getBet() {
         return bet;
     }
@@ -28,8 +37,10 @@ public class BlackjackPlayer extends BlackjackDealer {
             throw new IllegalArgumentException("The bet amount should be positive");
         else if (bet > this.money)
              throw new IllegalArgumentException("Not enough money to make this bet");
-        else
-            this.bet = bet;
+        else {
+             this.bet = bet;
+             this.money -= bet;
+        }
     }
     
     public double getSideBet() {
@@ -56,12 +67,22 @@ public class BlackjackPlayer extends BlackjackDealer {
             this.money = money;
     }
     
+    public void win(double amount) {
+        this.money += amount;
+        this.bet = 0;
+        this.sideBet = 0;
+        if (this.splitHand.isEmpty())
+            super.getHand().clearHand();
+        else if (this.splitHand.isEmpty())
+            this.splitHand.clearHand();
+    }
+    
     public void split() {
         if ((splitHand.getSize() == 0) && (super.getHand().getSize() == 2) && 
                 (super.getHand().getCardAtIndex(0).getRank() == 
                 super.getHand().getCardAtIndex(0).getRank())) {
             splitHand.draw(super.getHand().getCardAtIndex(1));
-            super.getHand().removeCard();
+            super.getHand().removeCardToSplit();
         }
         // else throw custom exception
     }
@@ -83,7 +104,6 @@ public class BlackjackPlayer extends BlackjackDealer {
     }
     
     public String toString() {
-      String result = "";
-      return result;
+      return String.format(getPlayerID() + " " + bet + " " + money);
     }
 }

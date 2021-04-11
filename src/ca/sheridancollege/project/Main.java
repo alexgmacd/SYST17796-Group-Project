@@ -85,6 +85,18 @@ public class Main {
          game.getDealer().hit(game.getShoe().pop());
          
          // check naturals
-         
+         for (int i = 0; i < game.getPlayers().size(); i++) {
+             if (game.getPlayerAtIndex(i).getHand().checkNaturals()) {
+                 if (game.getDealer().getHand().checkNaturals()) {
+                      game.getPlayerAtIndex(i).win(game.getPlayerAtIndex(i).getBet());
+                      // ROUND END
+                 }
+                 else {
+                     game.getPlayerAtIndex(i).win(game.getPlayerAtIndex(i).getBet() * 1.5);
+                     // ROUND END
+                 }
+                 
+            }
+        }
     }
 }
