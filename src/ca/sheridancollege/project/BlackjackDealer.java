@@ -12,22 +12,39 @@ package ca.sheridancollege.project;
  */
 public class BlackjackDealer extends Player {
     
-    //Ask in meeting on implementation, private or protected.
     private BlackjackHand hand;
-    
+
+    /**
+     * Constructor that calls super and initiates a BlackjackHand.
+     */   
     public BlackjackDealer(){
         super("Dealer");
         hand = new BlackjackHand();
     }
-    
+
+    /**
+     * Getter method for the Dealer's hand.
+     * 
+     * @return the Dealer's hand.
+     */        
     public BlackjackHand getHand() {
         return this.hand;
     }
     
+    /**
+     * Setter method for the Dealer's hand.
+     * 
+     * @param hand the BlackjackHand to be set.
+     */        
     public void setHand(BlackjackHand hand) {
         this.hand = hand;
     }
-    
+
+    /**
+     * Calls draw method of hand to add to Dealer's Hand.
+     * 
+     * @param card the BlackjackCard to be added to the Dealer's hand.
+     */       
     public void hit(BlackjackCard card){
         hand.draw(card);
     }
@@ -35,11 +52,21 @@ public class BlackjackDealer extends Player {
     public void stand() {
         
     }
-    
+
+    /**
+     * Checking if hand has busted.
+     * 
+     * @return true if hand value is greater than 21, false if it is less.
+     */   
     public boolean busted(){
         return hand.handValue() > 21;
     }
-    
+
+    /**
+     * Returns String of Dealer's hand and hand value.
+     * 
+     * @return String representation of Dealer's hand.
+     */    
     public String toString(){
         String s = String.format("%s's %s\nHand Value: %d\n", 
                 getPlayerID(), hand.toString(), hand.handValue());

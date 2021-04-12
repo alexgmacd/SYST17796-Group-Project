@@ -13,6 +13,9 @@ import java.util.ArrayList;
  */
 public class BlackjackDeck extends GroupOfCards {
     
+    /**
+     * Constructor creates BlackjackDeck with 52 cards, 13 Rank values times 4.
+     */
     public BlackjackDeck(){
         super(0);
         cards = new ArrayList<>();

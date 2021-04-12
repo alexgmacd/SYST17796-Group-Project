@@ -13,7 +13,12 @@ import java.util.Stack;
 public class BlackjackGame extends Game {
     private BlackjackDealer dealer;
     private Stack<BlackjackCard> shoe;
-    
+
+    /**
+     * Constructor initiates dealer and shoe, creates 6 shuffled decks added to
+     * an ArrayList, removes a random amount of cards between 60-76 from the
+     * ArrayList and then adds the ArrayList to the shoe.
+     */
     public BlackjackGame() {
         super("Blackjack");
         dealer = new BlackjackDealer();
@@ -32,15 +37,32 @@ public class BlackjackGame extends Game {
         }
         shoe.addAll(futureShoe);
     }
-    
+
+    /**
+     * Getter method to get the Dealer of the game.
+     * 
+     * @return the Dealer of the game.
+     */           
     public BlackjackDealer getDealer() {
         return dealer;
     }
-    
+
+    /**
+     * Getter method to get the Shoe of the game.
+     * 
+     * @return the Shoe of the game.
+     */            
     public Stack<BlackjackCard> getShoe() {
         return shoe;
     }
-    
+
+    /**
+     * Method checks if the player's chosen ID is valid, a valid ID is one
+     * that is not already taken by another player and is not equal to "Dealer".
+     * 
+     * @param playerID the desired player ID.
+     * @return true if ID is valid, false if ID is invalid.
+     */       
     public boolean checkPlayer(String playerID) {
         boolean checker = true;
         for (int i = 0; i < super.getPlayers().size(); i++) {
@@ -52,15 +74,29 @@ public class BlackjackGame extends Game {
         }
         return checker;
     }
-    
+
+    /**
+     * Getter method to get the specific player of the players ArrayList.
+     * 
+     * @param player the index of the players ArrayList.
+     * @return the player at the specified index.
+     */            
     public BlackjackPlayer getPlayerAtIndex(int player) {
         return (BlackjackPlayer)super.getPlayers().get(player);
     }
-    
+
+    /**
+     * Method to add a player to the players ArrayList.
+     * 
+     * @param player the player to be added.
+     */          
     public void addPlayer(BlackjackPlayer player) {
         super.getPlayers().add(player);
     }
-    
+
+    /**
+     * Method to implement full game functionality.
+     */          
     public void play() {
         Scanner input = new Scanner(System.in);
         boolean continueLoop = true;
@@ -299,13 +335,23 @@ public class BlackjackGame extends Game {
     
     public void declareWinner() {
     }
-    
+
+    /**
+     * Method to communicate player's total money after finishing the game.
+     *
+     * @param i the index of the player to print money and id.
+     */       
     public void finish(int i) {
         System.out.printf("Player %s, you have finished the game! "
                 + "You have $%.2f now. Thanks for playing!\n",
                 this.getPlayerAtIndex(i).getPlayerID(), this.getPlayerAtIndex(i).getMoney());
     }
-    
+
+    /**
+     * Return's status of all players in the game and the dealer's status.
+     *
+     * @return String representation of each players status and dealer's status.
+     */       
     public String toString() {
         StringBuilder s = new StringBuilder();
          for (int i = 0; i < this.getPlayers().size(); i++) {

@@ -10,7 +10,13 @@ public class BlackjackPlayer extends BlackjackDealer {
     private double bet;
     private double sideBet;
     private double money;
-    
+
+    /**
+     * Constructor that calls super, sets the Player's ID, initiates splitHand 
+     * and sets values of bet, sideBet and money.
+     * 
+     * @param playerID the ID of the player.
+     */             
     public BlackjackPlayer(String playerID) {
         super();
         super.setPlayerID(playerID);
@@ -19,20 +25,43 @@ public class BlackjackPlayer extends BlackjackDealer {
         setSideBet(0);
         setMoney(500);
     }
-    
+
+    /**
+     * Getter method to get the split hand.
+     * 
+     * @return the split hand.
+     */               
     public BlackjackHand getSplitHand() {
         return splitHand;
     }
-    
+
+    /**
+     * Setter method to set the split hand.
+     * 
+     * @param splitHand the BlackjackHand to set.
+     */           
     public void setSplitHand(BlackjackHand splitHand) {
         this.splitHand.draw(super.getHand().getCardAtIndex(1));
         super.getHand().removeCardToSplit();
     }
-    
+
+    /**
+     * Getter method to get the player's bet value.
+     * 
+     * @return the bet value.
+     */   
     public double getBet() {
         return bet;
     }
-    
+
+    /**
+     * Setter method to set the bet amount, if the value is negative or greater
+     * than the current money value then an exception will be thrown.
+     * 
+     * @param bet the bet value to be set.
+     * @throws IllegalArgumentException if bet is negative or greater than money
+     * value.
+     */               
     public void setBet(double bet) {
         if (bet < 0)
             throw new IllegalArgumentException("The bet amount should be positive");
@@ -43,11 +72,24 @@ public class BlackjackPlayer extends BlackjackDealer {
              this.money -= bet;
         }
     }
-    
+
+    /**
+     * Getter method to get the player's side bet value.
+     * 
+     * @return the side bet value.
+     */               
     public double getSideBet() {
         return sideBet;
     }
-    
+
+    /**
+     * Setter method to set the side bet amount, if the value is negative or 
+     * greater than half the current bet value an exception will be thrown.
+     * 
+     * @param sideBet the side bet value to be set.
+     * @throws IllegalArgumentException if side bet is greater than half of bet
+     * value or is a negative value.
+     */ 
     public void setSideBet(double sideBet) {
          if (sideBet > (this.bet * 0.5))
             throw new IllegalArgumentException("The side bet should be up to half the original");
@@ -56,18 +98,35 @@ public class BlackjackPlayer extends BlackjackDealer {
          else
              this.sideBet = sideBet;
     }
-    
+
+    /**
+     * Getter method to get the player's money value.
+     * 
+     * @return the money value.
+     */           
      public double getMoney() {
         return money;
     }
-    
+
+    /**
+     * Setter method to set the money amount, if the value is negative then an 
+     * exception will be thrown.
+     * 
+     * @param money the money value to be set.
+     */                 
     public void setMoney(double money) {
         if (money < 0)
             throw new IllegalArgumentException("The amount of money cannot be negative");
         else
             this.money = money;
     }
-    
+
+    /**
+     * Method to call when player win's, adds amount to their money, resets
+     * their bets and clear's player's hands if they contain cards.
+     * 
+     * @param amount the amount won by the player.
+     */               
     public void win(double amount) {
         this.money += amount;
         this.bet = 0;
@@ -77,7 +136,12 @@ public class BlackjackPlayer extends BlackjackDealer {
         else if (this.splitHand.isEmpty())
             this.splitHand.clearHand();
     }
-    
+
+    /**
+     * Method to split the player's hand if their two card's Rank values match.
+     * 
+     * @throws InvalidSplitException if the two cards are not the same rank.
+     */  
     public void split() throws InvalidSplitException {
         if ((splitHand.getSize() == 0) && (super.getHand().getSize() == 2) && 
                 (super.getHand().getCardAtIndex(0).getRank() == 
@@ -90,8 +154,11 @@ public class BlackjackPlayer extends BlackjackDealer {
                     "Split only available with two cards of the same rank.");
     }
     
-    // that one case one the given card is face down (like for dealer)
-    // if ever did that, cannot do anything anymore until the end of the round
+    /**
+     * Method to double down player's hand if their hand value is 9, 10 or 11.
+     * 
+     * @throws InvalidDoubleDownException if hand value is not 9, 10 or 11.
+     */            
     public void doubleDown() throws InvalidDoubleDownException {
         if ((super.getHand().handValue() == 9) || 
                 (super.getHand().handValue() == 10) ||
@@ -102,7 +169,10 @@ public class BlackjackPlayer extends BlackjackDealer {
                     "Double down only available with a hand with total value"
                             + " of 9, 10 or 11.");
     }
-    
+
+    /**
+     * Method to allow player to surrender their hand.
+     */  
     public void surrender() {
         this.money += this.bet * 0.5;
         this.bet = 0;
@@ -110,7 +180,10 @@ public class BlackjackPlayer extends BlackjackDealer {
         super.getHand().clearHand();
         this.splitHand.clearHand();
     }
-    
+
+    /**
+     * Method that shows player options they have to play the game.
+     */    
     public void play() {
         System.out.println(this);
         System.out.printf("Player %s, choose what you want to do:\n" +
@@ -128,7 +201,13 @@ public class BlackjackPlayer extends BlackjackDealer {
                 "Press 5 to surrender - get a half of your bet amount back " +
                 "and quit the game\n", this.getPlayerID());
     }
-    
+
+    /**
+     * Return's String of player's hand, money and appends their bet values if 
+     * they are greater than 0.
+     *
+     * @return String representation of the player's current status.
+     */       
     public String toString() {
       StringBuilder s = new StringBuilder();
       s.append(String.format("%s's %s Hand Value: %d", 
