@@ -8,6 +8,7 @@ package ca.sheridancollege.project;
 /**
  *
  * @author Alex
+ * @modifier Eleonora
  */
 public class BlackjackDealer extends Player {
     
@@ -31,16 +32,24 @@ public class BlackjackDealer extends Player {
         hand.draw(card);
     }
     
+    public void stand() {
+        
+    }
+    
     public boolean busted(){
         return hand.handValue() > 21;
     }
     
     public String toString(){
-        String s = String.format("%s's %s\nHand Value: %d", 
+        String s = String.format("%s's %s\nHand Value: %d\n", 
                 getPlayerID(), hand.toString(), hand.handValue());
         return s;
     }
     
+    // might have something to do with displaying the hidden card? cannot really put game logic here b/c drawn card should come strictly for the shoe
+    // while we have no acccess to the shoe from here and never will)))
+    // can put system.out.print statements here actually
+    // same issue with declarewinner and play in game
     public void play(){
         //Maybe just showing dealer's first card after the drawing in BlackjackGame
         //Showing values of dealers hand, if statement if it's empty, say he draws card, if it has cards displaying them and the value instead?
