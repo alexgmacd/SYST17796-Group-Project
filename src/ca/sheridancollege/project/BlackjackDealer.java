@@ -98,8 +98,8 @@ public class BlackjackDealer extends Player {
      * @return String representation of Dealer's hand.
      */
     public String hideCard() {
-        String s = String.format("%s's Hand: [%s, HIDDEN]\nHand Value: %d\n", 
-                getPlayerID(), hand.cards.get(0).toString(), hand.handValue());
+        String s = String.format("%s's Hand: [%s, HIDDEN]\n", 
+                getPlayerID(), hand.cards.get(0).toString());
         return s;
     }
 
@@ -109,8 +109,8 @@ public class BlackjackDealer extends Player {
      * @return String representation of Dealer's hand.
      */    
     public String toString(){
-        String s = String.format("%s's %s\nHand Value: %d\n", 
-                getPlayerID(), hand.toString(), hand.handValue());
+        String s = String.format("%s's %s\n", 
+                getPlayerID(), hand.toString());
         return s;
     }
     

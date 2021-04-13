@@ -215,8 +215,8 @@ public class BlackjackPlayer extends BlackjackDealer {
      */       
     public String toString() {
       StringBuilder s = new StringBuilder();
-      s.append(String.format("%s's %s Hand Value: %d", 
-            getPlayerID(), getHand().toString(), getHand().handValue()));
+      s.append(String.format("%s's %s", 
+            getPlayerID(), getHand().toString()));
       s.append("\nCurrent money: ").append(money);
       if(bet > 0){
           s.append("\nCurrent bet: ").append(bet);

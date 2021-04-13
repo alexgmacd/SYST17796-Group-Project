@@ -2,7 +2,7 @@ package ca.sheridancollege.project;
 
 /**
  *
- * @author Eleonora Kukash
+ * @author Eleonora
  */
 public class Main {
     public static void main(String[] args) {

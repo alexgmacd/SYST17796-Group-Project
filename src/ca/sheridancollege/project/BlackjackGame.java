@@ -10,6 +10,7 @@ import java.util.Stack;
 /**
  *
  * @author Eleonora
+ * @modifier Alex
  */
 public class BlackjackGame extends Game {
     private BlackjackDealer dealer;
