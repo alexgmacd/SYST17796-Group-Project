@@ -10,7 +10,12 @@ package ca.sheridancollege.project;
  * @author Alex
  */
 public class InvalidSplitException extends Exception {
-    
+   
+    /**
+     * Create custom exception with message.
+     * 
+     * @param message the message to be thrown
+     */    
     public InvalidSplitException(String message){
         super(message);
     }

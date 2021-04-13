@@ -25,6 +25,14 @@ public class BlackjackHand extends GroupOfCards {
         aceCount = 0;
         cards = new ArrayList<>();
     }
+    
+    public int getAceCount(){
+        return aceCount;
+    }
+    
+    public void setAceCount(int aceCount){
+        this.aceCount = aceCount;
+    }
 
     /**
      * Method to draw a card and add to cards ArrayList, and increase aceCount 
