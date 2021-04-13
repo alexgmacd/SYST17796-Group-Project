@@ -2,6 +2,7 @@ package ca.sheridancollege.project;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
@@ -23,19 +24,7 @@ public class BlackjackGame extends Game {
         super("Blackjack");
         dealer = new BlackjackDealer();
         shoe = new Stack<BlackjackCard>();
-        ArrayList futureShoe = new ArrayList<BlackjackCard>();
-        for (int i = 0; i < 6; i++) {
-            BlackjackDeck deck = new BlackjackDeck();
-            deck.shuffle();
-            futureShoe.addAll(deck.showCards());
-        }
-        Collections.shuffle(futureShoe);
-        Random random = new Random();
-        int blankCard = random.nextInt(76 - 60) + 60;
-        for (int i = 0; i < blankCard; i++) {
-            futureShoe.remove(i);
-        }
-        shoe.addAll(futureShoe);
+        this.setShoe();
     }
 
     /**
@@ -54,6 +43,35 @@ public class BlackjackGame extends Game {
      */            
     public Stack<BlackjackCard> getShoe() {
         return shoe;
+    }
+    
+    /**
+     * Setter method for the Shoe of the game; called when the game is
+     * initialized and every other time the bottom of the shoe is reached
+     * and it needs to be reshuffled.
+     */  
+    public void setShoe() {
+        ArrayList futureShoe = new ArrayList<BlackjackCard>();
+        for (int i = 0; i < 6; i++) {
+            BlackjackDeck deck = new BlackjackDeck();
+            deck.shuffle();
+            futureShoe.addAll(deck.showCards());
+        }
+        Collections.shuffle(futureShoe);
+        Random random = new Random();
+        int blankCard = random.nextInt(76 - 60) + 60;
+        for (int i = 0; i < blankCard; i++) {
+            futureShoe.remove(i);
+        }
+        this.shoe.addAll(futureShoe);
+    }
+    
+    /**
+     * Check if the shoe is empty.
+     * @return true if the shoe is empty
+     */
+    public boolean isShoeEmpty() {
+        return shoe.empty();
     }
 
     /**
@@ -93,6 +111,17 @@ public class BlackjackGame extends Game {
     public void addPlayer(BlackjackPlayer player) {
         super.getPlayers().add(player);
     }
+    
+    /**
+     * Method to remove a player from the players ArrayList when they quit
+     * the game.
+     * 
+     * @param player the player to be removed.
+     */          
+    public void removePlayer(BlackjackPlayer player) {
+        super.getPlayers().remove(player);
+    }
+    
 
     /**
      * Method to implement full game functionality.
@@ -275,7 +304,7 @@ public class BlackjackGame extends Game {
                                 + "the dealer does not. Congratulations, you "
                                 + "won 1.5 amount of your bet!", 
                                 this.getPlayerAtIndex(i).getPlayerID());
-                        this.getPlayerAtIndex(i).win(this.getPlayerAtIndex(i).getBet() * 1.5);                        
+                        this.getPlayerAtIndex(i).win(this.getPlayerAtIndex(i).getBet() * 2.5);                        
                         this.finish(i);
                     }
                 }
@@ -285,38 +314,70 @@ public class BlackjackGame extends Game {
             System.out.println("Nobody has naturals. The game continues for "
                     + "all players accordingly.");
         
-        //each player does something
+        this.deleteFinishedPlayers();
+        
+        // the actual play
         ArrayList<BlackjackPlayer> doubleDowns = new ArrayList();
-        for (int i = 0; i < this.getPlayers().size(); i++) {
+        do {
+            for (int i = 0; i < this.getPlayers().size(); i++) {
             continueLoop = true;
-            if (doubleDowns.contains(this.getPlayerAtIndex(i)))
+            if (this.shoe.isEmpty())
+                this.setShoe();
+            else if (doubleDowns.contains(this.getPlayerAtIndex(i)))
                 System.out.printf("Player %s, you did double down, so you skip!", 
                         this.getPlayerAtIndex(i).getPlayerID());
             else {
                 do {
                     try {
-                        this.getPlayerAtIndex(i).play();
-                        int action = input.nextInt();
-                        if (action == 1) {
-                            this.getPlayerAtIndex(i).hit(this.getShoe().pop());
-                        }                           
-                        if (action == 2) {
-                             this.getPlayerAtIndex(i).stand();
-                        }  
-                        if (action == 3)
-                        {
-                            this.getPlayerAtIndex(i).split();
-                            System.out.println(this.getPlayerAtIndex(i));
+                        if (!this.getPlayerAtIndex(i).busted()) {
+                            this.getPlayerAtIndex(i).play();
+                            int action = input.nextInt();
+                            if (action == 1) {
+                                this.getPlayerAtIndex(i).hit(this.getShoe().pop());
+                            }                           
+                            if (action == 2) {
+                                this.getPlayerAtIndex(i).stand();
+                            }  
+                            if (action == 3)
+                            {
+                                this.getPlayerAtIndex(i).split();
+                                System.out.println(this.getPlayerAtIndex(i));
+                            }
+                            if (action == 4) {
+                                this.getPlayerAtIndex(i).doubleDown();   
+                                this.getPlayerAtIndex(i).hit(this.getShoe().pop());
+                                doubleDowns.add(this.getPlayerAtIndex(i));
+                                System.out.println(this.getPlayerAtIndex(i));
+                            }
+                            if (action == 5) {
+                                this.getPlayerAtIndex(i).surrender(this.getPlayerAtIndex(i).getHand());
+                                this.finish(i);
+                            }
                         }
-                        if (action == 4) {
-                            this.getPlayerAtIndex(i).doubleDown();
-                            this.getPlayerAtIndex(i).hit(this.getShoe().pop());
-                            doubleDowns.add(this.getPlayerAtIndex(i));
-                            System.out.println(this.getPlayerAtIndex(i));
-                        }
-                        if (action == 5) {
-                            this.getPlayerAtIndex(i).surrender();
-                            this.finish(i);
+                        if (!this.getPlayerAtIndex(i).getSplitHand().isEmpty()) {
+                            this.getPlayerAtIndex(i).play();
+                            int action = input.nextInt();
+                            if (action == 1) {
+                                this.getPlayerAtIndex(i).getHand().draw(this.getShoe().pop());
+                            }                           
+                            if (action == 2) {
+                                this.getPlayerAtIndex(i).stand();
+                            }  
+                            if (action == 3)
+                            {
+                                this.getPlayerAtIndex(i).split();
+                                System.out.println(this.getPlayerAtIndex(i));
+                            }
+                            if (action == 4) {
+                                this.getPlayerAtIndex(i).doubleDown();   
+                                this.getPlayerAtIndex(i).hit(this.getShoe().pop());
+                                doubleDowns.add(this.getPlayerAtIndex(i));
+                                System.out.println(this.getPlayerAtIndex(i));
+                            }
+                            if (action == 5) {
+                                this.getPlayerAtIndex(i).surrender(this.getPlayerAtIndex(i).getSplitHand());
+                                this.finish(i);
+                            }
                         }
                         continueLoop = false;
                     }
@@ -329,11 +390,102 @@ public class BlackjackGame extends Game {
                 } while (continueLoop);
             }    
         }
-        // dealer does their thing
-        //check for busted is done, but will be pasted after this
+        this.dealer.play(this.getShoe().peek());
+        
+        //check who busted
+        for (int i = 0; i < this.getPlayers().size(); i++) {
+            if ((this.getPlayerAtIndex(i).busted()) && 
+                    (this.getPlayerAtIndex(i).getSplitHand().isEmpty())) {
+                System.out.printf("Player %s, you busted!\n", 
+                                this.getPlayerAtIndex(i).getPlayerID());
+                        this.getPlayerAtIndex(i).win(0);                        
+                        this.finish(i);
+            } 
+            else if ((this.getPlayerAtIndex(i).busted()) && 
+                    (!this.getPlayerAtIndex(i).getSplitHand().isEmpty())) {
+                 System.out.printf("Player %s, you busted, but you still have "
+                         + "your split hand!", this.getPlayerAtIndex(i).getPlayerID());
+                        this.getPlayerAtIndex(i).setBet(getPlayerAtIndex(i).getBet() * 0.5);
+            }
+        }
+        this.deleteFinishedPlayers();
+        } while ((!dealer.busted()) && (dealer.getStatus()));
+        
+        //check if dealer busted
+        if (this.dealer.busted()) {
+            System.out.println("The dealer busted! All the remaining players "
+            + "win their bets");
+            for (int i = 0; i < this.getPlayers().size(); i++) {
+                this.getPlayerAtIndex(i).win(this.getPlayerAtIndex(i).getBet() * 2);
+                this.finish(i);
+            }
+            this.declareWinner();
+            
+        // check if dealer is still playing
+        if (!this.dealer.getStatus()) {
+            System.out.println("The dealer has not busted, but has reached " +
+                    "the hand value of 17 or more, which mean they cannot " +
+                    "draw more cards. Time to compare values of all the "
+                    + "remaining players and the dealer!");
+                for (int i = 0; i < this.getPlayers().size(); i++) {
+                    if (this.dealer.getHand().handValue() > this.getPlayerAtIndex(i).getHand().handValue()) {
+                        if (this.getPlayerAtIndex(i).getSplitHand().isEmpty()) {
+                            System.out.printf("Player %s, you total is further from "
+                                + "21 than the dealer's."
+                                + "Unfortunately, you lost!", 
+                                this.getPlayerAtIndex(i).getPlayerID());
+                        this.getPlayerAtIndex(i).win(0);
+                        this.finish(i);
+                        }
+                        else {
+                            if (this.dealer.getHand().handValue() < this.getPlayerAtIndex(i).getSplitHand().handValue()) {
+                                System.out.printf("Player %s, you total is further from "
+                                + "21 than the dealer's on one hand, but closer "
+                                        + "on the split hand. It's a tie!", 
+                                this.getPlayerAtIndex(i).getPlayerID());
+                        this.getPlayerAtIndex(i).win(this.getPlayerAtIndex(i).getBet());
+                        this.finish(i); 
+                            }
+                        }
+                    }
+                    else if (this.dealer.getHand().handValue() < this.getPlayerAtIndex(i).getHand().handValue()) {
+                        if (this.getPlayerAtIndex(i).getSplitHand().isEmpty()) {
+                            System.out.printf("Player %s, you total is closer to "
+                                + "21 than the dealer's. You won!", 
+                                this.getPlayerAtIndex(i).getPlayerID());
+                            this.getPlayerAtIndex(i).win(this.getPlayerAtIndex(i).getBet() * 2);
+                            this.finish(i);
+                        }
+                        else {
+                            if (this.dealer.getHand().handValue() < this.getPlayerAtIndex(i).getSplitHand().handValue()) {
+                                System.out.printf("Player %s, you total is further from "
+                                        + "21 than the dealer's on split hand, but closer "
+                                        + "on the main hand. It's a tie!", 
+                                this.getPlayerAtIndex(i).getPlayerID());
+                                this.getPlayerAtIndex(i).win(this.getPlayerAtIndex(i).getBet());
+                                this.finish(i); 
+                            }
+                        }
+                    }
+                    else
+                       System.out.printf("Player %s, you total the same as "
+                                + "the dealer's. It's a tie!", 
+                                this.getPlayerAtIndex(i).getPlayerID());
+                        this.getPlayerAtIndex(i).win(this.getPlayerAtIndex(i).getBet());
+                        this.finish(i); 
+                }
+                this.declareWinner();
+            }
+        }
     }
     
+    /**
+     * Method to finish the game.
+     * 
+     */
     public void declareWinner() {
+        System.out.println("The game is over!");
+        System.exit(0); 
     }
 
     /**
@@ -342,9 +494,21 @@ public class BlackjackGame extends Game {
      * @param i the index of the player to print money and id.
      */       
     public void finish(int i) {
-        System.out.printf("Player %s, you have finished the game! "
+        System.out.printf("\nPlayer %s, you have finished the game! "
                 + "You have $%.2f now. Thanks for playing!\n",
                 this.getPlayerAtIndex(i).getPlayerID(), this.getPlayerAtIndex(i).getMoney());
+        this.getPlayerAtIndex(i).stopPlaying();
+    }
+    
+    public void deleteFinishedPlayers() {
+        Iterator<Player> iterator = super.getPlayers().iterator();
+        while(iterator.hasNext()) {
+            Player player = iterator.next();
+            BlackjackPlayer castedPlayer = (BlackjackPlayer)player;
+            if (!castedPlayer.getStatus()) {
+                iterator.remove();
+            }
+        }
     }
 
     /**
@@ -360,7 +524,7 @@ public class BlackjackGame extends Game {
              s.append("\n");
          }
          s.append("\n");
-         s.append(this.dealer.toString());
+         s.append(this.dealer.hideCard());
          return s.toString();
     }
 }

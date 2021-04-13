@@ -13,6 +13,7 @@ package ca.sheridancollege.project;
 public class BlackjackDealer extends Player {
     
     private BlackjackHand hand;
+    private boolean status;
 
     /**
      * Constructor that calls super and initiates a BlackjackHand.
@@ -20,6 +21,7 @@ public class BlackjackDealer extends Player {
     public BlackjackDealer(){
         super("Dealer");
         hand = new BlackjackHand();
+        status = true;
     }
 
     /**
@@ -39,6 +41,31 @@ public class BlackjackDealer extends Player {
     public void setHand(BlackjackHand hand) {
         this.hand = hand;
     }
+    
+    /**
+     * Getter method to get the Dealer's status.
+     * 
+     * @return true if player is still playing, false if not.
+     */ 
+    public boolean getStatus() {
+        return status;
+    }
+    
+    /**
+     * Setter method for status.
+     * @param status the status to be set
+     * the game.
+     */ 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+    
+    /**
+     * Method to switch status to false when they quit the game.
+     */ 
+    public void stopPlaying() {
+        this.status = false;
+    }
 
     /**
      * Calls draw method of hand to add to Dealer's Hand.
@@ -49,6 +76,9 @@ public class BlackjackDealer extends Player {
         hand.draw(card);
     }
     
+    /**
+     * Method to stand, therefore, not ask for other card.
+     */  
     public void stand() {
         
     }
@@ -60,6 +90,17 @@ public class BlackjackDealer extends Player {
      */   
     public boolean busted(){
         return hand.handValue() > 21;
+    }
+    
+    /**
+     * Returns String of Dealer's hand and hand value with the second card hidden.
+     * 
+     * @return String representation of Dealer's hand.
+     */
+    public String hideCard() {
+        String s = String.format("%s's Hand: [%s, HIDDEN]\nHand Value: %d\n", 
+                getPlayerID(), hand.cards.get(0).toString(), hand.handValue());
+        return s;
     }
 
     /**
@@ -73,17 +114,22 @@ public class BlackjackDealer extends Player {
         return s;
     }
     
-    // might have something to do with displaying the hidden card? cannot really put game logic here b/c drawn card should come strictly for the shoe
-    // while we have no acccess to the shoe from here and never will)))
-    // can put system.out.print statements here actually
-    // same issue with declarewinner and play in game
-    public void play(){
-        //Maybe just showing dealer's first card after the drawing in BlackjackGame
-        //Showing values of dealers hand, if statement if it's empty, say he draws card, if it has cards displaying them and the value instead?
-        //Showing info about what the dealer did at the start i.e; drew 1 card for dealer, drew 2 for each player
-        //ask about this in group meeting
+    public void play() {
     }
     
+    /**
+     * Method for the dealer to play their turn automatically.
+     * @param card to be drawn if the dealer is able to hit.
+     */ 
+    public void play(BlackjackCard card){
+        if (this.hand.handValue() <= 16)
+            this.hit(card);
+        else {
+            this.stopPlaying();
+            this.stand();
+            
+        }
+    }
 }
 
 

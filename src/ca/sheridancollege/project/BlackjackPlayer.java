@@ -24,6 +24,8 @@ public class BlackjackPlayer extends BlackjackDealer {
         setBet(0);
         setSideBet(0);
         setMoney(500);
+        super.setStatus(true);
+        
     }
 
     /**
@@ -172,13 +174,16 @@ public class BlackjackPlayer extends BlackjackDealer {
 
     /**
      * Method to allow player to surrender their hand.
+     * @param hand hand to surrender
      */  
-    public void surrender() {
+    public void surrender(BlackjackHand hand) {
         this.money += this.bet * 0.5;
         this.bet = 0;
         this.sideBet = 0;
-        super.getHand().clearHand();
-        this.splitHand.clearHand();
+        if (hand == this.getHand())
+            super.getHand().clearHand();
+        else
+            this.splitHand.clearHand();
     }
 
     /**
