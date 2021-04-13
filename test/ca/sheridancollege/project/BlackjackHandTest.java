@@ -5,13 +5,9 @@
  */
 package ca.sheridancollege.project;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
+
 
 /**
  *
@@ -20,22 +16,6 @@ import org.junit.Ignore;
 public class BlackjackHandTest {
     
     public BlackjackHandTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
     }
 
     /**

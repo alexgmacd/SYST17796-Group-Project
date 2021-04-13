@@ -5,14 +5,10 @@
  */
 package ca.sheridancollege.project;
 
-import java.util.Stack;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
+
 
 /**
  *
@@ -23,22 +19,6 @@ public class BlackjackGameTest {
     public BlackjackGameTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Good Test of checkPlayer method, of class BlackjackGame.
      */
@@ -94,30 +74,5 @@ public class BlackjackGameTest {
         assertEquals(expResult, result);
     }
     
-
-
-    /**
-     * Test of play method, of class BlackjackGame.
-     */
-    @Ignore
-    public void testPlay() {
-        System.out.println("play");
-        BlackjackGame instance = new BlackjackGame();
-        instance.play();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of declareWinner method, of class BlackjackGame.
-     */
-    @Ignore
-    public void testDeclareWinner() {
-        System.out.println("declareWinner");
-        BlackjackGame instance = new BlackjackGame();
-        instance.declareWinner();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
     
 }

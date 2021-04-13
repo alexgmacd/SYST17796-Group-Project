@@ -33,7 +33,6 @@ public class BlackjackDealerTest {
         boolean expResult = true;
         boolean result = dealer.busted();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
     }
     
     /**
